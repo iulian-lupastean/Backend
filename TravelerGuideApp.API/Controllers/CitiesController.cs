@@ -22,7 +22,7 @@ namespace TravelerGuideApp.API.Controllers
         }
 
         [HttpPost]
-        [Route("Admin/")]
+        [Route("Admin")]
         public async Task<IActionResult> CreateCity([FromBody] CityPutPostDto city)
         {
             var command = new CreateCityCommand
@@ -41,6 +41,18 @@ namespace TravelerGuideApp.API.Controllers
         {
             var result = await _mediator.Send(new GetCityByIdQuery { Id = id });
 
+            var mappedResult = _mapper.Map<CityGetDto>(result);
+            if (mappedResult == null)
+                return NotFound();
+            return Ok(mappedResult);
+
+        }
+
+        [HttpGet]
+        [Route("{country}/{cityName}")]
+        public async Task<IActionResult> GetCityByNameAndCountry(string cityName, string country)
+        {
+            var result = await _mediator.Send(new GetCityByNameAndCountry { Name = cityName, Country = country });
             var mappedResult = _mapper.Map<CityGetDto>(result);
             if (mappedResult == null)
                 return NotFound();

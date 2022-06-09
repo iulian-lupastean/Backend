@@ -49,6 +49,7 @@ namespace TravelerGuideApp.API.Controllers
             return new UserAuthDto
             {
                 Email = user.Email,
+                Id = user.Id,
                 Token = _tokenService.CreateToken(user)
             };
         }
